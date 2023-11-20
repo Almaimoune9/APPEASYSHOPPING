@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:easyshoppingapp/pages/Accueil/accueil.dart';
+import 'package:easyshoppingapp/pages/insClient/insClient.dart';
 import 'package:flutter/material.dart';
 
 class BoutonLogin extends StatelessWidget {
@@ -18,6 +20,7 @@ Widget build(BuildContext context) {
             fixedSize: const Size(300, 50),
           ),
           onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const Accueil()));
           },
           child: const Text('Connexion', style: TextStyle(fontSize: 20)),
         ),
@@ -33,6 +36,7 @@ Widget build(BuildContext context) {
             ),
             TextButton(
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const InsClient()));
               },
               child: 
               const Text('S\'inscrire', 
