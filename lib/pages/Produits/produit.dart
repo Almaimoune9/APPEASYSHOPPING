@@ -34,9 +34,6 @@ class _AjoutProduitState extends State<AjoutProduit> {
   ];
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
-
-  TextEditingController titreController = TextEditingController();
-  TextEditingController dateLivraisonController = TextEditingController();
   TextEditingController nomProduitController = TextEditingController();
   TextEditingController quantiteController = TextEditingController();
   TextEditingController descriptionProduitController = TextEditingController();
@@ -70,43 +67,33 @@ class _AjoutProduitState extends State<AjoutProduit> {
   @override
   void initState() {
     super.initState();
-    titreController.clear();
-    dateLivraisonController.clear();
     nomProduitController.clear();
     quantiteController.clear();
     descriptionProduitController.clear();
   }
 
   Future<void> _ajouterPanierAvecProduits() async {
-    final titre = titreController.text;
-    final dateLivraison = dateLivraisonController.text;
     final nomProduit = nomProduitController.text;
     final quantite = quantiteController.text;
     final descriptionProduit = descriptionProduitController.text;
 
     try {
       if (image != null) {
-        await PanierAPIService.CreerPanierAvecProduits(
-          titre: titre,
-          dateLivraison: dateLivraison,
+        await PanierAPIService.AjoutProduit(
           nomProduit: nomProduit,
           quantite: quantite,
-          descriptionProduit: descriptionProduit,
+          description: descriptionProduit,
           image: image as File,
         );
       } else {
-        await PanierAPIService.CreerPanierAvecProduits(
-          titre: titre,
-          dateLivraison: dateLivraison,
+        await PanierAPIService.AjoutProduit(
           nomProduit: nomProduit,
           quantite: quantite,
-          descriptionProduit: descriptionProduit,
+          description: descriptionProduit,
         );
       }
 
-      print("Panier créé avec succès : $titre");
-      titreController.clear();
-      dateLivraisonController.clear();
+      print("Panier créé avec succès : $nomProduit");
       nomProduitController.clear();
       quantiteController.clear();
       descriptionProduitController.clear();
@@ -204,36 +191,6 @@ class _AjoutProduitState extends State<AjoutProduit> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextField(
-                  controller: titreController,
-                  decoration: InputDecoration(
-                    labelText: 'Titre du panier',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
-                        borderSide:
-                            BorderSide(width: 0, style: BorderStyle.solid)),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextField(
-                  controller: dateLivraisonController,
-                  decoration: InputDecoration(
-                    labelText: 'Date de livraison',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
-                        borderSide:
-                            BorderSide(width: 0, style: BorderStyle.solid)),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  ),
                 ),
               ),
               Padding(
