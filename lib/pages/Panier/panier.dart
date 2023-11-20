@@ -38,84 +38,35 @@ class _PanierPageState extends State<PanierPage> {
 
   TextEditingController titreController = TextEditingController();
   TextEditingController dateLivraisonController = TextEditingController();
-  TextEditingController nomProduitController = TextEditingController();
-  TextEditingController quantiteController = TextEditingController();
-  TextEditingController descriptionProduitController = TextEditingController();
 
-  File? image;
-  String? imageSrc;
-
-  Future<File> imageTemporaire(String imagePath) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final name = basename(imagePath);
-    final image = File('${directory.path}/$name');
-    return File(imagePath).copy(imagePath);
-  }
-
-  Future<void> _pickerImage() async {
-    try {
-      final pickedImage =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (pickedImage != null) {
-        setState(() {
-          image = File(pickedImage.path);
-          imageSrc = pickedImage.path;
-        });
-      }
-    } catch (e) {
-      debugPrint('Erreur: $e');
-    }
-  }
+  
 
   @override
   void initState() {
     super.initState();
     titreController.clear();
     dateLivraisonController.clear();
-    nomProduitController.clear();
-    quantiteController.clear();
-    descriptionProduitController.clear();
   }
 
   Future<void> _ajouterPanierAvecProduits() async {
-    final titre = titreController.text;
-    final dateLivraison = dateLivraisonController.text;
-    final nomProduit = nomProduitController.text;
-    final quantite = quantiteController.text;
-    final descriptionProduit = descriptionProduitController.text;
+  final titre = titreController.text;
+  final dateLivraison = dateLivraisonController.text;
 
-    try {
-      if (image != null) {
-        await PanierAPIService.CreerPanierAvecProduits(
-          titre: titre,
-          dateLivraison: dateLivraison,
-          nomProduit: nomProduit,
-          quantite: quantite,
-          descriptionProduit: descriptionProduit,
-          image: image as File,
-        );
-      } else {
-        await PanierAPIService.CreerPanierAvecProduits(
-          titre: titre,
-          dateLivraison: dateLivraison,
-          nomProduit: nomProduit,
-          quantite: quantite,
-          descriptionProduit: descriptionProduit,
-        );
-      }
+  try {
+    await PanierAPIService.CreerPanierAvecProduits(
+      titre: titre,
+      dateLivraison: dateLivraison,
+    );
 
-      print("Panier créé avec succès : $titre");
-      titreController.clear();
-      dateLivraisonController.clear();
-      nomProduitController.clear();
-      quantiteController.clear();
-      descriptionProduitController.clear();
-    } catch (e) {
-      final String errorMessage = e.toString();
-      debugPrint(errorMessage);
-    }
+    print("Panier créé avec succès : $titre");
+    titreController.clear();
+    dateLivraisonController.clear();
+  } catch (e) {
+    final String errorMessage = e.toString();
+    debugPrint(errorMessage);
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -238,102 +189,7 @@ class _PanierPageState extends State<PanierPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextField(
-                  controller: nomProduitController,
-                  decoration: InputDecoration(
-                    labelText: 'Nom produit',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
-                        borderSide:
-                            BorderSide(width: 0, style: BorderStyle.solid)),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextField(
-                  controller: quantiteController,
-                  decoration: InputDecoration(
-                    labelText: 'Quantiter',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(28),
-                        borderSide:
-                            BorderSide(width: 0, style: BorderStyle.solid)),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: TextField(
-                  controller: descriptionProduitController,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    labelText: 'Description du produit',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(28),
-                      borderSide:
-                          BorderSide(width: 0, style: BorderStyle.solid),
-                    ),
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Row(
-                  children: [
-                    // Espace entre les boutons
-                    ElevatedButton(
-                      onPressed: _pickerImage,
-                      child: Text('Sélectionner une image'),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(30),
-                      child: (image != null)
-                          ? Image.file(
-                              image!,
-                              height: 50,
-                            )
-                          : Image.asset(
-                              "assets/images/profile.png",
-                              height: 50,
-                            ),
-                    ),
-                    SizedBox(width: 50),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.black, // Couleur du bouton "+"
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 80),
-                child: Text(
-                  'Nombre de produits dans le panier : 12',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
+              
               SizedBox(
                 height: 10,
               ),
