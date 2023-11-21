@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easyshoppingapp/Models/panier.dart';
 import 'package:easyshoppingapp/Services/api_panier_service.dart';
 import 'package:easyshoppingapp/pages/Accueil/accueil.dart';
 import 'package:easyshoppingapp/pages/Accueil/const.dart';
@@ -72,10 +73,12 @@ class _AjoutProduitState extends State<AjoutProduit> {
     descriptionProduitController.clear();
   }
 
-  Future<void> _ajouterPanierAvecProduits() async {
+  Future<void> _ajoutProduit() async {
     final nomProduit = nomProduitController.text;
     final quantite = quantiteController.text;
     final descriptionProduit = descriptionProduitController.text;
+
+    Produit newProduit;
 
     try {
       if (image != null) {
@@ -93,7 +96,7 @@ class _AjoutProduitState extends State<AjoutProduit> {
         );
       }
 
-      print("Panier créé avec succès : $nomProduit");
+      print("Produit créé avec succès : $nomProduit");
       nomProduitController.clear();
       quantiteController.clear();
       descriptionProduitController.clear();
@@ -196,7 +199,6 @@ class _AjoutProduitState extends State<AjoutProduit> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: TextField(
-                  controller: nomProduitController,
                   decoration: InputDecoration(
                     labelText: 'Nom produit',
                     border: OutlineInputBorder(
@@ -206,6 +208,9 @@ class _AjoutProduitState extends State<AjoutProduit> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   ),
+                  onChanged: (String value) {
+                          nomProduitController.text = value;
+                        },
                 ),
               ),
               Padding(
@@ -221,12 +226,14 @@ class _AjoutProduitState extends State<AjoutProduit> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   ),
+                  onChanged: (String value) {
+                          quantiteController.text = value;
+                        },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: TextField(
-                  controller: descriptionProduitController,
                   maxLines: 5,
                   decoration: InputDecoration(
                     labelText: 'Description du produit',
@@ -238,6 +245,9 @@ class _AjoutProduitState extends State<AjoutProduit> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
+                  onChanged: (String value) {
+                          descriptionProduitController.text = value;
+                        },
                 ),
               ),
               Padding(
@@ -282,16 +292,6 @@ class _AjoutProduitState extends State<AjoutProduit> {
               SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 80),
-                child: Text(
-                  'Nombre de produits dans le panier : 12',
-                  style: TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -306,10 +306,10 @@ class _AjoutProduitState extends State<AjoutProduit> {
                   ),
                   SizedBox(width: 60),
                   ElevatedButton(
-                    onPressed: _ajouterPanierAvecProduits,
+                    onPressed: _ajoutProduit,
                     style: ElevatedButton.styleFrom(
                         primary: Colors.green, fixedSize: Size(120, 40)),
-                    child: Text('Valider panier'),
+                    child: Text('Envoyer'),
                   ),
                 ],
               ),

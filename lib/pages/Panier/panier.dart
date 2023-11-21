@@ -1,6 +1,7 @@
 // import 'package:carousel_slider/carousel_slider.dart';
 import 'dart:io';
 
+import 'package:easyshoppingapp/Models/panier.dart';
 import 'package:easyshoppingapp/Services/api_panier_service.dart';
 import 'package:easyshoppingapp/pages/Accueil/accueil.dart';
 import 'package:easyshoppingapp/pages/Accueil/const.dart';
@@ -14,7 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 class PanierPage extends StatefulWidget {
-  const PanierPage({Key? key}) : super(key: key);
+  const PanierPage({super.key});
 
   @override
   State<PanierPage> createState() => _PanierPageState();
@@ -52,21 +53,23 @@ class _PanierPageState extends State<PanierPage> {
   final titre = titreController.text;
   final dateLivraison = dateLivraisonController.text;
 
-  try {
-    await PanierAPIService.CreerPanierAvecProduits(
-      titre: titre,
-      dateLivraison: dateLivraison,
-    );
 
-    print("Panier créé avec succès : $titre");
-    titreController.clear();
-    dateLivraisonController.clear();
-  } catch (e) {
-    final String errorMessage = e.toString();
-    debugPrint(errorMessage);
-  }
+try {
+  // Remplacez la logique de création du panier avec les produits
+  await PanierAPIService.CreerPanierAvecProduits(
+    titre: titre,
+    dateLivraison: dateLivraison,
+  );
+
+  print("Panier créé avec succès : $titre");
+  titreController.clear();
+  dateLivraisonController.clear();
+} catch (e) {
+  final String errorMessage = e.toString();
+  debugPrint(errorMessage);
 }
 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +165,6 @@ class _PanierPageState extends State<PanierPage> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: TextField(
-                  controller: titreController,
                   decoration: InputDecoration(
                     labelText: 'Titre du panier',
                     border: OutlineInputBorder(
@@ -172,12 +174,14 @@ class _PanierPageState extends State<PanierPage> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   ),
+                  onChanged: (String value) {
+                          titreController.text = value;
+                        },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: TextField(
-                  controller: dateLivraisonController,
                   decoration: InputDecoration(
                     labelText: 'Date de livraison',
                     border: OutlineInputBorder(
@@ -187,6 +191,9 @@ class _PanierPageState extends State<PanierPage> {
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   ),
+                  onChanged: (String value) {
+                          dateLivraisonController.text = value;
+                        },
                 ),
               ),
               

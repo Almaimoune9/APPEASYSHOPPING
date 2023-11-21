@@ -1,4 +1,6 @@
 
+import 'package:easyshoppingapp/pages/Panier/panier.dart';
+import 'package:easyshoppingapp/pages/Produits/produit.dart';
 import 'package:easyshoppingapp/pages/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Easy shopping',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: PanierPage(),
     );
   }
 }
